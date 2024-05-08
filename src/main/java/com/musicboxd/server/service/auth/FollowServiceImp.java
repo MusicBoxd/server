@@ -31,15 +31,12 @@ public class FollowServiceImp implements FollowService{
         if (follower == null || following == null) {
             return false;
         }
-
         if (follower.equals(following)) {
             return false;
         }
-
         if (isFollowing(follower, following)) {
             return false;
         }
-
         Follow follow = new Follow();
         follow.setFollower(follower);
         follow.setFollowed(following);
@@ -50,7 +47,24 @@ public class FollowServiceImp implements FollowService{
     private boolean isFollowing(User follower, User followed) {
         return followRepository.existsByFollowerAndFollowed(follower, followed);
     }
-
+    @Transactional
+    @Override
+    public boolean unfollowUser(Long unfollowId) {
+        User loginedUser = retriveLoggedInUser();
+        User unfollowUser = userRepository.findById(unfollowId)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
+        if (loginedUser == null || unfollowUser == null){
+            return false;
+        }
+        if (!isFollowing(loginedUser, unfollowUser)) {
+            return false;
+        }
+        if (loginedUser.equals(unfollowUser)){
+            return false;
+        }
+        followRepository.deleteByFollowerAndFollowed(loginedUser, unfollowUser);
+        return true;
+    }
     @Override
     public Set<User> getfollowers() {
         User loginedUser = retriveLoggedInUser();
@@ -60,7 +74,6 @@ public class FollowServiceImp implements FollowService{
         }
         return followRepository.findFollowersByFollowed(user);
     }
-
     @Override
     public Set<User> getfollowing() {
         User loginedUser = retriveLoggedInUser();
@@ -68,10 +81,8 @@ public class FollowServiceImp implements FollowService{
         if (user.isEmpty()) {
             return Collections.emptySet();
         }
-
         return followRepository.findFollowedByFollowers(user);
     }
-
     private User retriveLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication == null || !authentication.isAuthenticated())

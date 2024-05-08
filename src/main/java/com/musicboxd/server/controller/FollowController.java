@@ -15,8 +15,21 @@ public class FollowController {
     FollowService followService;
     @PostMapping("/{followingId}")
     public ResponseEntity<String> followUser(@PathVariable Long followingId){
-        followService.followUser(followingId);
-        return ResponseEntity.ok("Success Followed ");
+        boolean success = followService.followUser(followingId);
+        if (success) {
+            return ResponseEntity.ok("followed user successfully.");
+        }
+        return ResponseEntity.badRequest().body("Failed to follow user.");
+    }
+
+    @DeleteMapping("/{unfollowId}")
+    public ResponseEntity<String> unfollowUser (@PathVariable Long unfollowId){
+        boolean success = followService.unfollowUser(unfollowId);
+        if (success) {
+            return ResponseEntity.ok("Unfollowed user successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to unfollow user.");
+        }
     }
     @GetMapping("/getFollowers")
     public ResponseEntity<Set<User>> getFollowers(){

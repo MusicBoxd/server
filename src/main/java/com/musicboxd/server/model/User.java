@@ -32,15 +32,14 @@ public class User implements UserDetails {
 
     private String headerPic;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_relationship",
-            joinColumns = @JoinColumn(name = "follower_id"),
-            inverseJoinColumns = @JoinColumn(name = "followed_id"))
-    private Set<User> following;
+    @OneToMany(mappedBy = "follower")
+    private Set<Follow> following;
 
+    @OneToMany(mappedBy = "followed")
+    private Set<Follow> followers;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "following")
-    private Set<User> followers;
+    @OneToMany(mappedBy = "user")
+    private Set<ListenList> listenLists;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

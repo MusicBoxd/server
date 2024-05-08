@@ -10,4 +10,6 @@ public interface FollowService {
     Set<User> getfollowers();
 
     Set<User> getfollowing();
+
+    boolean unfollowUser(Long unfollowId);
 }
