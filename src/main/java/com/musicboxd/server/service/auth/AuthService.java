@@ -1,0 +1,17 @@
+package com.musicboxd.server.service.auth;
+
+import com.musicboxd.server.dto.SignUpRequest;
+import com.musicboxd.server.dto.UpdateUserRequest;
+import com.musicboxd.server.dto.UserDTO;
+import com.musicboxd.server.model.AuthenticationRequest;
+import com.musicboxd.server.model.AuthenticationResponse;
+
+public interface AuthService {
+    UserDTO createUser(SignUpRequest signUpRequest);
+
+    UserDTO updateUser(Long userId, UpdateUserRequest updateUserRequest);
+
+    AuthenticationResponse signin(AuthenticationRequest signInRequest);
+
+    UserDTO createAdmin(SignUpRequest signUpRequest);
+}
