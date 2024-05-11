@@ -1,4 +1,4 @@
-package com.musicboxd.server.service.auth;
+package com.musicboxd.server.service.listenList;
 
 import com.musicboxd.server.model.ListenList;
 import com.musicboxd.server.model.User;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ListenListServiceImp implements ListenListService{
+public class ListenListServiceImp implements ListenListService {
     @Autowired
     UserRepository userRepository;
     @Autowired

@@ -1,4 +1,4 @@
-package com.musicboxd.server.service.auth;
+package com.musicboxd.server.service.follow;
 
 import com.musicboxd.server.model.User;
 

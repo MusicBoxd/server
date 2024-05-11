@@ -1,4 +1,4 @@
-package com.musicboxd.server.service.auth;
+package com.musicboxd.server.service.follow;
 
 import com.musicboxd.server.model.Follow;
 import com.musicboxd.server.model.User;
@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class FollowServiceImp implements FollowService{
+public class FollowServiceImp implements FollowService {
     @Autowired
     private FollowRepository followRepository;
     @Autowired

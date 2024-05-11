@@ -1,18 +1,17 @@
 package com.musicboxd.server.controller;
 
+import com.musicboxd.server.dto.MailRequest;
 import com.musicboxd.server.dto.SignUpRequest;
 import com.musicboxd.server.dto.UpdateUserRequest;
 import com.musicboxd.server.dto.UserDTO;
 import com.musicboxd.server.model.AuthenticationRequest;
 import com.musicboxd.server.model.AuthenticationResponse;
-import com.musicboxd.server.repository.UserRepository;
 import com.musicboxd.server.service.auth.AuthService;
-import com.musicboxd.server.service.auth.jwt.JWTService;
+import com.musicboxd.server.service.mail.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +21,8 @@ public class AuthController {
     AuthService authService;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    MailService mailService;
 
     @PostMapping("user/signup")
     public ResponseEntity<?> signupUser(@RequestBody SignUpRequest signUpRequest){
@@ -44,13 +45,11 @@ public class AuthController {
             return new ResponseEntity<>("Admin Not Created ", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(adminDTO,HttpStatus.CREATED);
-
-
     }
 
-    @PutMapping("/update/{userId}")
-    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody UpdateUserRequest updateUserRequest) {
-        UserDTO updatedUser = authService.updateUser(userId,updateUserRequest);
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequest updateUserRequest) {
+        UserDTO updatedUser = authService.updateUser(updateUserRequest);
         if (updatedUser == null) {
             return new ResponseEntity<>("User Not Found", HttpStatus.NOT_FOUND);
         }

@@ -1,7 +1,7 @@
 package com.musicboxd.server.controller;
 
 import com.musicboxd.server.model.User;
-import com.musicboxd.server.service.auth.FollowService;
+import com.musicboxd.server.service.follow.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

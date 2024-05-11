@@ -9,7 +9,7 @@ import com.musicboxd.server.model.AuthenticationResponse;
 public interface AuthService {
     UserDTO createUser(SignUpRequest signUpRequest);
 
-    UserDTO updateUser(Long userId, UpdateUserRequest updateUserRequest);
+    UserDTO updateUser(UpdateUserRequest updateUserRequest);
 
     AuthenticationResponse signin(AuthenticationRequest signInRequest);
 

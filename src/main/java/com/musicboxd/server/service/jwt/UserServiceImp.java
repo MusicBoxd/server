@@ -1,6 +1,5 @@
-package com.musicboxd.server.service.auth.jwt;
+package com.musicboxd.server.service.jwt;
 
-import com.musicboxd.server.model.User;
 import com.musicboxd.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImp implements UserService {

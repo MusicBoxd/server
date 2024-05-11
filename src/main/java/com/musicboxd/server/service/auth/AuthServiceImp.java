@@ -9,12 +9,16 @@ import com.musicboxd.server.model.AuthenticationResponse;
 import com.musicboxd.server.model.User;
 import com.musicboxd.server.repository.UserRepository;
 import com.musicboxd.server.service.auth.AuthService;
-import com.musicboxd.server.service.auth.jwt.JWTService;
+import com.musicboxd.server.service.jwt.JWTService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -64,16 +68,21 @@ public class AuthServiceImp implements AuthService {
         authenticationResponse.setRefreshJwt(refreshToken);
         authenticationResponse.setUserId(user.getId());
         authenticationResponse.setUserRole(user.getUserRole());
-        return authenticationResponse;
 
+        return authenticationResponse;
     }
 
     @Override
-    public UserDTO updateUser(Long userId, UpdateUserRequest updateUserRequest) {
-        User user = userRepo.findById(userId).orElse(null);
+    public UserDTO updateUser(UpdateUserRequest updateUserRequest) {
+        User user = retriveLoggedInUser();
         if(user==null)
             return null;
-        BeanUtils.copyProperties(updateUserRequest,user);
+        user.setName(updateUserRequest.getName()!=null ? updateUserRequest.getName() : user.getName());
+        user.setUsername(updateUserRequest.getUsername() != null ? updateUserRequest.getUsername() : user.getUsername());
+        user.setProfilePic(updateUserRequest.getProfilePic() != null ? updateUserRequest.getProfilePic() : user.getProfilePic());
+        user.setHeaderPic(updateUserRequest.getHeaderPic() != null ? updateUserRequest.getHeaderPic() : user.getHeaderPic());
+
+//        user.setPassword(new BCryptPasswordEncoder().encode(updateUserRequest.getPassword()));
         userRepo.save(user);
 
         return convertToDto(user);
@@ -83,5 +92,14 @@ public class AuthServiceImp implements AuthService {
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user, userDTO);
         return userDTO;
+    }
+    private User retriveLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated())
+            throw new BadCredentialsException("Bad Credentials login ");
+        String username = authentication.getName();
+        System.out.println("In Logged In User "+username);
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found "));
     }
 }

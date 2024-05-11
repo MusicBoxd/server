@@ -1,4 +1,4 @@
-package com.musicboxd.server.service.auth.jwt;
+package com.musicboxd.server.service.jwt;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
