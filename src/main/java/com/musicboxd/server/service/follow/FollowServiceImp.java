@@ -6,6 +6,8 @@ import com.musicboxd.server.repository.FollowRepository;
 import com.musicboxd.server.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,6 +44,10 @@ public class FollowServiceImp implements FollowService {
         follow.setFollowed(following);
         followRepository.save(follow);
 
+        follower.setFollowingCount(following.getFollowerCount() + 1);
+        following.setFollowerCount(follower.getFollowingCount() + 1);
+        userRepository.save(follower);
+        userRepository.save(following);
         return true;
     }
     private boolean isFollowing(User follower, User followed) {
@@ -50,38 +56,56 @@ public class FollowServiceImp implements FollowService {
     @Transactional
     @Override
     public boolean unfollowUser(Long unfollowId) {
-        User loginedUser = retriveLoggedInUser();
+        User loggedInUser = retriveLoggedInUser();
         User unfollowUser = userRepository.findById(unfollowId)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
-        if (loginedUser == null || unfollowUser == null){
+        if (loggedInUser == null || unfollowUser == null){
             return false;
         }
-        if (!isFollowing(loginedUser, unfollowUser)) {
+        if (!isFollowing(loggedInUser, unfollowUser)) {
             return false;
         }
-        if (loginedUser.equals(unfollowUser)){
+        if (loggedInUser.equals(unfollowUser)){
             return false;
         }
-        followRepository.deleteByFollowerAndFollowed(loginedUser, unfollowUser);
+        followRepository.deleteByFollowerAndFollowed(loggedInUser, unfollowUser);
+
+
+        loggedInUser.setFollowingCount(loggedInUser.getFollowingCount() - 1);
+        unfollowUser.setFollowerCount(unfollowUser.getFollowerCount() - 1);
+        userRepository.save(loggedInUser);
+        userRepository.save(unfollowUser);
         return true;
     }
     @Override
-    public Set<User> getfollowers() {
-        User loginedUser = retriveLoggedInUser();
-        Optional<User> user = userRepository.findByUsername(loginedUser.getUsername());
-        if (user.isEmpty()) {
-            return Collections.emptySet();
-        }
-        return followRepository.findFollowersByFollowed(user);
+    public ResponseEntity<Integer> getFollowingCount() {
+        User user = retriveLoggedInUser();
+        int following = followRepository.countByFollowedId(user);
+        return ResponseEntity.ok(following);
     }
     @Override
-    public Set<User> getfollowing() {
-        User loginedUser = retriveLoggedInUser();
-        Optional<User> user = userRepository.findByUsername(loginedUser.getUsername());
-        if (user.isEmpty()) {
-            return Collections.emptySet();
+    public ResponseEntity<Integer> getFollowersCount() {
+        User user = retriveLoggedInUser();
+        int followers = followRepository.countByFollowerId(user);
+        return ResponseEntity.ok(followers);
+    }
+    @Override
+    public ResponseEntity<Set<User>> getfollowers() {
+        User user = retriveLoggedInUser();
+        if (user == null) {
+            return new ResponseEntity<>(Collections.emptySet(), HttpStatus.EXPECTATION_FAILED);
         }
-        return followRepository.findFollowedByFollowers(user);
+        Set<User> followers = followRepository.findFollowersByFollowed(user);
+        return ResponseEntity.ok(followers);
+    }
+    @Override
+    public ResponseEntity<Set<User>> getfollowing() {
+        User user = retriveLoggedInUser();
+        if (user==null) {
+            return new ResponseEntity<>(Collections.emptySet(), HttpStatus.EXPECTATION_FAILED);
+        }
+        Set<User> following = followRepository.findFollowedByFollowers(user);
+        return ResponseEntity.ok(following);
     }
     private User retriveLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

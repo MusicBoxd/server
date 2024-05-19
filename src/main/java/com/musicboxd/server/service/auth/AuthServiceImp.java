@@ -34,6 +34,9 @@ public class AuthServiceImp implements AuthService {
     private final JWTService jwtService;
     @Override
     public UserDTO createUser(SignUpRequest signUpRequest) {
+        if (userRepo.findByUsername(signUpRequest.getUsername()).isPresent()) {
+            return null;
+        }
         User user = new User();
         user.setName(signUpRequest.getName());
         user.setUsername(signUpRequest.getUsername());

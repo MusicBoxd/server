@@ -33,13 +33,21 @@ public class FollowController {
     }
     @GetMapping("/getFollowers")
     public ResponseEntity<Set<User>> getFollowers(){
-        Set<User> followers = followService.getfollowers();
-        return ResponseEntity.ok(followers);
+        return followService.getfollowers();
     }
 
     @GetMapping("/getFollowing")
     public ResponseEntity<Set<User>> getFollowing(){
-        Set<User> following = followService.getfollowing();
-        return ResponseEntity.ok(following);
+        return followService.getfollowing();
+    }
+
+    @GetMapping("/getFollowingCount")
+    public ResponseEntity<Integer> getFollowingCount(){
+        return followService.getFollowingCount();
+    }
+
+    @GetMapping("/getFollowersCount")
+    public ResponseEntity<Integer> getFollowersCount(){
+        return followService.getFollowersCount();
     }
 }
