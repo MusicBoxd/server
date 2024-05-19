@@ -42,8 +42,4 @@ public class FollowController {
         Set<User> following = followService.getfollowing();
         return ResponseEntity.ok(following);
     }
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello(){
-        return ResponseEntity.ok("Hello USer");
-    }
 }

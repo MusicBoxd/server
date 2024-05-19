@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ForgetPasswordRepository extends JpaRepository<ForgetPassword,Long> {
-    ForgetPassword findByOtpAndUser(Integer otp, User user);
+    ForgetPassword findByOtpAndUser(String otp, User user);
 }

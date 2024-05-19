@@ -21,11 +21,6 @@ public class MailController {
     @Autowired
     UserRepository userRepository;
 
-//    @PostMapping("/sent")
-//    public ResponseEntity<?> sendMail(@RequestBody MailRequest mailRequest){
-//        return mailService.sendMail(mailRequest);
-//    }
-
     @PostMapping("/verify/{username}")
     public ResponseEntity<?> verifyUsername(@PathVariable String username){
         User user = userRepository.findByUsername(username)
@@ -33,14 +28,13 @@ public class MailController {
         return mailService.sendOtp(user);
     }
     @PostMapping("/verifyOTP/{otp}/{username}")
-    public ResponseEntity<?> verifyOTP(@PathVariable Integer otp, @PathVariable String username){
+    public ResponseEntity<?> verifyOTP(@PathVariable String otp, @PathVariable String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
         return mailService.verifyOTP(user, otp);
     }
     @PostMapping("/changePassword")
     public ResponseEntity<?> changePassword(@RequestBody ChangePassword changePassword){
-
         return mailService.changePassword(changePassword);
     }
 }

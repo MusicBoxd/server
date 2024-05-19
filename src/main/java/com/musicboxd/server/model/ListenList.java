@@ -13,9 +13,9 @@ public class ListenList {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "album_id")
+    @Column(name = "album_id", nullable = false)
     private String albumId;
 }

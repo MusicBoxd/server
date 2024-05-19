@@ -49,7 +49,7 @@ public class MailService {
     }
 
     public ResponseEntity<?> sendOtp(User user) {
-        Integer otp = otpGenerator();
+        String otp = otpGenerator();
         MailRequest mailRequest = new MailRequest();
         mailRequest.setEmail(user.getUsername());
         mailRequest.setSubject("Your OTP for Forget Password");
@@ -65,12 +65,18 @@ public class MailService {
         return new ResponseEntity<>("Mail sent for Verification", HttpStatus.OK);
 
     }
-    private Integer otpGenerator() {
+    private String otpGenerator() {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
-        return random.nextInt(100_000,999_999);
+        StringBuilder otp = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            otp.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return otp.toString();
     }
 
-    public ResponseEntity<?> verifyOTP(User user, Integer otp) {
+
+    public ResponseEntity<?> verifyOTP(User user, String otp) {
         ForgetPassword forgetPassword = forgetPasswordRepository.findByOtpAndUser(otp,user);
         if (forgetPassword == null) {
             return new ResponseEntity<>("Invalid OTP", HttpStatus.BAD_REQUEST);

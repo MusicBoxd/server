@@ -19,17 +19,24 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @Column(unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private UserRole userRole;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String profilePic;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String headerPic;
 
     @OneToMany(mappedBy = "follower")
@@ -38,8 +45,17 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "followed")
     private Set<Follow> followers;
 
+    @Column(nullable = false)
+    private int followingCount = 0;
+
+    @Column(nullable = false)
+    private int followerCount = 0;
+
     @OneToMany(mappedBy = "user")
     private Set<ListenList> listenLists;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Review> reviews;
 
     @OneToOne(mappedBy = "user")
     private ForgetPassword forgetPassword;

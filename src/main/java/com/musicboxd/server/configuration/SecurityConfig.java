@@ -31,9 +31,12 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->{
                 request.requestMatchers("/api/auth/**").permitAll();
-                request.requestMatchers("/api/forgetPassword/**").permitAll();
-                request.requestMatchers("/api/user/**").hasAnyAuthority(UserRole.USER.name());
                 request.requestMatchers("/api/admin/**").hasAnyAuthority(UserRole.ADMIN.name());
+                request.requestMatchers("/api/user/**").hasAnyAuthority(UserRole.USER.name());
+                request.requestMatchers("/api/home/**").permitAll();
+                request.requestMatchers("/api/user/listen-list/**").hasAnyAuthority(UserRole.USER.name());
+                request.requestMatchers("/api/forgetPassword/**").permitAll();
+                request.requestMatchers("/api/auth/review/**").hasAnyAuthority(UserRole.USER.name());
                 request.anyRequest().authenticated();
                 })
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

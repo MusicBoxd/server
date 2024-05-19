@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/listen-list")
+@RequestMapping("/api/user/listen-list")
 public class ListenListController {
 
     @Autowired
@@ -29,5 +29,9 @@ public class ListenListController {
         } else {
             return ResponseEntity.badRequest().body("Failed to remove from the List.");
         }
+    }
+    @GetMapping("/getList")
+    public ResponseEntity<?> getUserListenList(){
+        return listenListService.getUserListenList();
     }
 }

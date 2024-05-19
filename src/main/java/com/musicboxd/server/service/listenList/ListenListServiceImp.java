@@ -7,11 +7,15 @@ import com.musicboxd.server.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +57,17 @@ public class ListenListServiceImp implements ListenListService {
         }
         listenListRepo.deleteByAlbumIdAndUser(albumId, loginedUser);
         return true;
+    }
+
+    @Override
+    public ResponseEntity<?> getUserListenList() {
+        User loggedInUser = retriveLoggedInUser();
+        List<ListenList> UserListenList = listenListRepo.findByUserId(loggedInUser.getId());
+        List<String> albumIds = new ArrayList<>();
+        for (ListenList listenList : UserListenList){
+            albumIds.add(listenList.getAlbumId());
+        }
+        return ResponseEntity.ok(albumIds);
     }
 
     private User retriveLoggedInUser() {

@@ -13,7 +13,7 @@ public class ForgetPassword {
     private Long fid;
 
     @Column(nullable = false)
-    private Integer otp;
+    private String otp;
 
     @Column(nullable = false)
     private Date expirationTime;
