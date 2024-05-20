@@ -80,13 +80,13 @@ public class FollowServiceImp implements FollowService {
     @Override
     public ResponseEntity<Integer> getFollowingCount() {
         User user = retriveLoggedInUser();
-        int following = followRepository.countByFollowedId(user);
+        int following = followRepository.countByFollowerId(user);
         return ResponseEntity.ok(following);
     }
     @Override
     public ResponseEntity<Integer> getFollowersCount() {
         User user = retriveLoggedInUser();
-        int followers = followRepository.countByFollowerId(user);
+        int followers = followRepository.countByFollowedId(user);
         return ResponseEntity.ok(followers);
     }
     @Override

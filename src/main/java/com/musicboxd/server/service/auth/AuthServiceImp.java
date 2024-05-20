@@ -71,6 +71,7 @@ public class AuthServiceImp implements AuthService {
         authenticationResponse.setRefreshJwt(refreshToken);
         authenticationResponse.setUserId(user.getId());
         authenticationResponse.setUserRole(user.getUserRole());
+        authenticationResponse.setUsername(user.getUsername());
 
         return authenticationResponse;
     }

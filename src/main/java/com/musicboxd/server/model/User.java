@@ -57,6 +57,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Review> reviews;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Like> likes;
+
     @OneToOne(mappedBy = "user")
     private ForgetPassword forgetPassword;
 
