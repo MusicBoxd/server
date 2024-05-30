@@ -4,9 +4,9 @@ import org.springframework.http.ResponseEntity;
 
 public interface ListenListService {
 
-    boolean addToListenList(String albumId);
+    boolean addToListenList(String uri);
 
-    boolean removeFromListenList(String albumId);
+    boolean removeFromListenList(String uri);
 
     ResponseEntity<?> getUserListenList();
 }

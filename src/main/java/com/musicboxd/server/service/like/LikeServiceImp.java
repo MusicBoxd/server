@@ -22,35 +22,35 @@ public class LikeServiceImp implements LikeService{
     @Autowired
     LikeRepository likeRepository;
     @Override
-    public ResponseEntity<String> addLike(String albumId) {
+    public ResponseEntity<String> addLike(String uris) {
         User user = retriveLoggedInUser();
         if (user == null){
             return new ResponseEntity<>("User Not Found", HttpStatus.EXPECTATION_FAILED);
         }
         Like like = new Like();
         like.setUser(user);
-        like.setAlbumId(albumId);
+        like.setUris(uris);
 
         likeRepository.save(like);
         return ResponseEntity.ok("Like the Album");
     }
 
     @Override
-    public ResponseEntity<String> removeLike(String albumId) {
+    public ResponseEntity<String> removeLike(String uris) {
         User user = retriveLoggedInUser();
         if (user == null){
             return new ResponseEntity<>("User Not Found", HttpStatus.EXPECTATION_FAILED);
         }
-        if(!likedAlbum(albumId, user)){
+        if(!likedAlbum(uris, user)){
             return new ResponseEntity<>("User Not Liked this Album ",HttpStatus.EXPECTATION_FAILED);
         }
-        likeRepository.deleteByAlbumIdAndUser(albumId, user);
+        likeRepository.deleteByUrisAndUser(uris, user);
         return ResponseEntity.ok("Removed Like");
     }
 
     @Override
-    public ResponseEntity<List<Like>> getLikesByAlbum(String albumId) {
-        return ResponseEntity.ok(likeRepository.findByAlbumId(albumId));
+    public ResponseEntity<List<Like>> getLikesByAlbum(String uris) {
+        return ResponseEntity.ok(likeRepository.findByUris(uris));
     }
 
     @Override
@@ -58,8 +58,8 @@ public class LikeServiceImp implements LikeService{
         return ResponseEntity.ok(likeRepository.findByUser(retriveLoggedInUser()));
     }
 
-    private boolean likedAlbum(String albumId, User user) {
-        return likeRepository.existsByAlbumIdAndUser(albumId, user);
+    private boolean likedAlbum(String uris, User user) {
+        return likeRepository.existsByUrisAndUser(uris, user);
     }
 
     private User retriveLoggedInUser() {

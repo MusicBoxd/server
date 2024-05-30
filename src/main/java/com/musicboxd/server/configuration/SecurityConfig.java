@@ -37,6 +37,7 @@ public class SecurityConfig {
                 request.requestMatchers("/api/auth/user/like/**").hasAnyAuthority(UserRole.USER.name());
                 request.requestMatchers("/api/user/listen-list/**").hasAnyAuthority(UserRole.USER.name());
                 request.requestMatchers("/api/forgetPassword/**").permitAll();
+                request.requestMatchers("/api/user/playlist/**");
                 request.requestMatchers("/api/auth/review/**").hasAnyAuthority(UserRole.USER.name());
                 request.anyRequest().authenticated();
                 })

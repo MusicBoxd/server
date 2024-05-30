@@ -15,14 +15,14 @@ public class LikeController {
     @Autowired
     LikeService likeService;
 
-    @PostMapping("/add/{albumId}")
-    public ResponseEntity<String> addLike(@PathVariable String albumId){
-        return likeService.addLike(albumId);
+    @PostMapping("/add/{uris}")
+    public ResponseEntity<String> addLike(@PathVariable String uris){
+        return likeService.addLike(uris);
     }
 
-    @DeleteMapping("/remove/{albumId}")
-    public ResponseEntity<String> removeLike(@PathVariable String albumId){
-        return likeService.removeLike(albumId);
+    @DeleteMapping("/remove/{uris}")
+    public ResponseEntity<String> removeLike(@PathVariable String uris){
+        return likeService.removeLike(uris);
     }
 
     @GetMapping("/user")

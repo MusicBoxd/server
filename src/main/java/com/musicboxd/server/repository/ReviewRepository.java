@@ -17,8 +17,8 @@ import java.util.Optional;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    @Query("SELECT r FROM Review r WHERE r.albumId = :albumId")
-    List<Review> findByAlbumId(@Param("albumId") String albumId);
+    @Query("SELECT r FROM Review r WHERE r.uris = :uris")
+    List<Review> findByUris(@Param("uris") String uris);
 
     List<Review> findByUserId(Long userId);
 
@@ -27,6 +27,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("DELETE FROM Review r WHERE r.user.id = :userId")
     int deleteByUserId(@Param("userId") Long userId);
 
-
-    boolean existsByAlbumIdAndUser(String albumId, User user);
+    boolean existsByUrisAndUser(String uris, User user);
 }

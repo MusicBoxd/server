@@ -33,21 +33,26 @@ public class ReviewServiceImp implements ReviewService{
 
     @Override
     @Transactional
-    public ResponseEntity<?> addReview(Review review) {
+    public ResponseEntity<?> addReview(ReviewDTO reviewDTO) {
         User user = retriveLoggedInUser();
         if (user == null){
             return new ResponseEntity<>(new UsernameNotFoundException("User Not Found"),HttpStatus.EXPECTATION_FAILED);
         }
-        if (reviewed(review.getAlbumId(), user)){
+        if (reviewed(reviewDTO.getUris(), user)){
             return new ResponseEntity<>("Already Reviewed",HttpStatus.EXPECTATION_FAILED);
         }
+        Review review = new Review();
+        review.setReviewTitle(reviewDTO.getReviewTitle());
+        review.setReviewText(reviewDTO.getReviewText());
+        review.setUris(reviewDTO.getUris());
+        review.setRating(reviewDTO.getRating());
         review.setUser(user);
-        Review reviewDB = reviewRepository.save(review);
-        return new ResponseEntity<>(convertToDto(reviewDB), HttpStatus.OK);
+        reviewRepository.save(review);
+        return new ResponseEntity<>("Reviewed Successfully", HttpStatus.OK);
     }
 
-    private boolean reviewed(String albumId, User user) {
-        return reviewRepository.existsByAlbumIdAndUser(albumId, user);
+    private boolean reviewed(String uris, User user) {
+        return reviewRepository.existsByUrisAndUser(uris, user);
     }
 
     @Override
@@ -71,8 +76,8 @@ public class ReviewServiceImp implements ReviewService{
     }
 
     @Override
-    public ResponseEntity<List<ReviewDTO>> getReviewsByAlbumId(String albumId) {
-        List<Review> reviews = reviewRepository.findByAlbumId(albumId);
+    public ResponseEntity<List<ReviewDTO>> getReviewsByUris(String uris) {
+        List<Review> reviews = reviewRepository.findByUris(uris);
         List<ReviewDTO> reviewDTOs = new ArrayList<>();
         for (Review review : reviews){
             reviewDTOs.add(convertToDto(review));

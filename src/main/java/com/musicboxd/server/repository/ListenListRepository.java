@@ -10,9 +10,9 @@ import java.util.List;
 
 @Repository
 public interface ListenListRepository extends JpaRepository<ListenList, String> {
-    void deleteByAlbumIdAndUser(String albumId, User user);
+    void deleteByUriAndUser(String uri, User user);
 
-    boolean existsByAlbumIdAndUser(String albumId, User loginedUser);
+    boolean existsByUriAndUser(String uri, User loginedUser);
 
     List<ListenList> findByUserId(Long id);
 }

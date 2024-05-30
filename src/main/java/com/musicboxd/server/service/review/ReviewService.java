@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface ReviewService {
-    ResponseEntity<List<ReviewDTO>> getReviewsByAlbumId(String albumId);
+    ResponseEntity<List<ReviewDTO>> getReviewsByUris(String uris);
 
-    ResponseEntity<?> addReview(Review review);
+    ResponseEntity<?> addReview(ReviewDTO reviewDTO);
 
     ResponseEntity<List<ReviewDTO>> getReviewsByUser(Long userId);
 

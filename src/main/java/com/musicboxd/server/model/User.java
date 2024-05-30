@@ -3,6 +3,8 @@ package com.musicboxd.server.model;
 import com.musicboxd.server.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,6 +41,9 @@ public class User implements UserDetails {
     @Column(columnDefinition = "TEXT")
     private String headerPic;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Address address;
+
     @OneToMany(mappedBy = "follower")
     private Set<Follow> following;
 
@@ -56,6 +61,11 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private Set<Review> reviews;
+
+    @OneToMany(mappedBy = "user")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Playlist> playlists;
 
     @OneToMany(mappedBy = "user")
     private Set<Like> likes;
@@ -88,5 +98,3 @@ public class User implements UserDetails {
         return true;
     }
 }
-
-

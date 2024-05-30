@@ -16,6 +16,6 @@ public class ListenList {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "album_id", nullable = false)
-    private String albumId;
+    @Column(name = "uris", nullable = false)
+    private String uri;
 }

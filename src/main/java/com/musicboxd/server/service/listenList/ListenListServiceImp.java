@@ -26,36 +26,36 @@ public class ListenListServiceImp implements ListenListService {
     ListenListRepository listenListRepo;
     @Transactional
     @Override
-    public boolean addToListenList(String albumId) {
+    public boolean addToListenList(String uri) {
         User loginedUser = retriveLoggedInUser();
         if (loginedUser == null){
             return false;
         }
-        if (addedToList(albumId, loginedUser)){
+        if (addedToList(uri, loginedUser)){
             return false;
         }
         ListenList listenList = new ListenList();
         listenList.setUser(loginedUser);
-        listenList.setAlbumId(albumId);
+        listenList.setUri(uri);
         listenListRepo.save(listenList);
         return true;
     }
 
-    private boolean addedToList(String albumId, User loginedUser) {
-        return listenListRepo.existsByAlbumIdAndUser(albumId,loginedUser);
+    private boolean addedToList(String uri, User loginedUser) {
+        return listenListRepo.existsByUriAndUser(uri,loginedUser);
     }
 
     @Transactional
     @Override
-    public boolean removeFromListenList(String albumId) {
+    public boolean removeFromListenList(String uri) {
         User loginedUser = retriveLoggedInUser();
         if (loginedUser == null){
             return false;
         }
-        if (!addedToList(albumId, loginedUser)){
+        if (!addedToList(uri, loginedUser)){
             return false;
         }
-        listenListRepo.deleteByAlbumIdAndUser(albumId, loginedUser);
+        listenListRepo.deleteByUriAndUser(uri, loginedUser);
         return true;
     }
 
@@ -63,11 +63,11 @@ public class ListenListServiceImp implements ListenListService {
     public ResponseEntity<?> getUserListenList() {
         User loggedInUser = retriveLoggedInUser();
         List<ListenList> UserListenList = listenListRepo.findByUserId(loggedInUser.getId());
-        List<String> albumIds = new ArrayList<>();
+        List<String> uris = new ArrayList<>();
         for (ListenList listenList : UserListenList){
-            albumIds.add(listenList.getAlbumId());
+            uris.add(listenList.getUri());
         }
-        return ResponseEntity.ok(albumIds);
+        return ResponseEntity.ok(uris);
     }
 
     private User retriveLoggedInUser() {

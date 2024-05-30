@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class ReviewDTO {
-    private String albumId;
+    private String uris;
     private String reviewText;
+    private String reviewTitle;
     private float rating;
 }

@@ -10,11 +10,11 @@ import java.util.List;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
-    void deleteByAlbumIdAndUser(String albumId, User user);
+    void deleteByUrisAndUser(String uris, User user);
 
-    boolean existsByAlbumIdAndUser(String albumId, User user);
+    boolean existsByUrisAndUser(String uris, User user);
 
-    List<Like> findByAlbumId(String albumId);
+    List<Like> findByUris(String uris);
 
     List<Like> findByUser(User user);
 }

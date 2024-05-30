@@ -18,8 +18,8 @@ public class ReviewController {
     ReviewService reviewService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addReview(@RequestBody Review review){
-        return reviewService.addReview(review);
+    public ResponseEntity<?> addReview(@RequestBody ReviewDTO reviewDTO){
+        return reviewService.addReview(reviewDTO);
     }
 
     @DeleteMapping("/delete/{userId}")

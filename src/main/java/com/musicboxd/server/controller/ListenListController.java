@@ -12,18 +12,18 @@ public class ListenListController {
     @Autowired
     ListenListService listenListService;
 
-    @PostMapping("/add/{albumId}")
-    public ResponseEntity<String> addToListenList(@PathVariable String albumId){
-        boolean success = listenListService.addToListenList(albumId);
+    @PostMapping("/add/{uri}")
+    public ResponseEntity<String> addToListenList(@PathVariable String uri){
+        boolean success = listenListService.addToListenList(uri);
         if (success) {
             return ResponseEntity.ok("Added to List successfully.");
         } else {
             return ResponseEntity.badRequest().body("Failed to add into the List.");
         }
     }
-    @DeleteMapping("remove/{albumId}")
-    public ResponseEntity<String> removeFromListenList(@PathVariable String albumId) {
-        boolean success = listenListService.removeFromListenList(albumId);
+    @DeleteMapping("remove/{uri}")
+    public ResponseEntity<String> removeFromListenList(@PathVariable String uri) {
+        boolean success = listenListService.removeFromListenList(uri);
         if (success) {
             return ResponseEntity.ok("Removed from the List successfully.");
         } else {

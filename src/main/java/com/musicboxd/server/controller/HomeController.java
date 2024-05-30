@@ -25,16 +25,16 @@ public class HomeController {
     public ResponseEntity<List<ReviewDTO>> getAllReviews(){
         return reviewService.getAllReviews();
     }
-    @GetMapping("review/{albumId}")
-    public ResponseEntity<List<ReviewDTO>> getReviewsByAlbumId(@PathVariable String albumId){
-        return reviewService.getReviewsByAlbumId(albumId);
+    @GetMapping("review/{uris}")
+    public ResponseEntity<List<ReviewDTO>> getReviewsByUris(@PathVariable String uris){
+        return reviewService.getReviewsByUris(uris);
     }
     @GetMapping("review/user/{userId}")
     public ResponseEntity<List<ReviewDTO>> getReviewsByUser(@PathVariable Long userId){
         return reviewService.getReviewsByUser(userId);
     }
-    @GetMapping("like/album/{albumId}")
-    public ResponseEntity<List<Like>> getLikesByAlbum(@PathVariable String albumId){
-        return likeService.getLikesByAlbum(albumId);
+    @GetMapping("like/album/{uris}")
+    public ResponseEntity<List<Like>> getLikesByAlbum(@PathVariable String uris){
+        return likeService.getLikesByAlbum(uris);
     }
 }

@@ -10,8 +10,10 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String reviewTitle;
+
     @Column(nullable = false)
-    private String albumId;
+    private String uris;
 
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)

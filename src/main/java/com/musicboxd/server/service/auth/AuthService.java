@@ -1,5 +1,6 @@
 package com.musicboxd.server.service.auth;
 
+import com.musicboxd.server.dto.RefreshTokenRequest;
 import com.musicboxd.server.dto.SignUpRequest;
 import com.musicboxd.server.dto.UpdateUserRequest;
 import com.musicboxd.server.dto.UserDTO;
@@ -12,6 +13,8 @@ public interface AuthService {
     UserDTO updateUser(UpdateUserRequest updateUserRequest);
 
     AuthenticationResponse signin(AuthenticationRequest signInRequest);
+
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
 
     UserDTO createAdmin(SignUpRequest signUpRequest);
 }
