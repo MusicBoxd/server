@@ -17,4 +17,6 @@ public interface PlaylistService {
     Set<PlaylistDTO> getPublicPlaylists();
 
     Set<PlaylistDTO> getPrivatePlaylists();
+
+    PlaylistDTO updatePlaylist(CreatePlaylistRequest createPlaylistRequest);
 }

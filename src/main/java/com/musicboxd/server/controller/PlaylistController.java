@@ -18,7 +18,12 @@ public class PlaylistController {
 
     @PostMapping("/createWithSongs")
     public ResponseEntity<PlaylistDTO> createPlaylist(@RequestBody CreatePlaylistRequest createPlaylistRequest){
-        PlaylistDTO playlistDTO = playlistService.createPlaylist(createPlaylistRequest);
+        PlaylistDTO playlistDTO;
+        if (createPlaylistRequest.getId() != null){
+            playlistDTO = playlistService.updatePlaylist(createPlaylistRequest);
+        } else {
+            playlistDTO = playlistService.createPlaylist(createPlaylistRequest);
+        }
         return ResponseEntity.ok(playlistDTO);
     }
 
