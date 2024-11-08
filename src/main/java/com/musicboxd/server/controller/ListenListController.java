@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user/listen-list")
 public class ListenListController {
-
     @Autowired
     ListenListService listenListService;
 

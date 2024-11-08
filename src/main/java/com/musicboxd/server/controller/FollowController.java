@@ -2,6 +2,7 @@ package com.musicboxd.server.controller;
 
 import com.musicboxd.server.dto.UpdateUserRequest;
 import com.musicboxd.server.dto.UserDTO;
+import com.musicboxd.server.exception.UserNotFoundException;
 import com.musicboxd.server.model.User;
 import com.musicboxd.server.service.auth.AuthService;
 import com.musicboxd.server.service.follow.FollowService;
@@ -29,23 +30,23 @@ public class FollowController {
     }
 
     @PostMapping("/{followingId}")
-    public ResponseEntity<String> followUser(@PathVariable Long followingId){
+    public ResponseEntity<String> followUser(@PathVariable Long followingId) {
         boolean success = followService.followUser(followingId);
-        if (success) {
-            return ResponseEntity.ok("followed user successfully.");
+        if (!success) {
+            throw new UserNotFoundException("Failed to follow user with ID: " + followingId);
         }
-        return ResponseEntity.badRequest().body("Failed to follow user.");
+        return ResponseEntity.ok("Followed user successfully.");
     }
 
     @DeleteMapping("/{unfollowId}")
-    public ResponseEntity<String> unfollowUser (@PathVariable Long unfollowId){
+    public ResponseEntity<String> unfollowUser(@PathVariable Long unfollowId) {
         boolean success = followService.unfollowUser(unfollowId);
-        if (success) {
-            return ResponseEntity.ok("Unfollowed user successfully.");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to unfollow user.");
+        if (!success) {
+            throw new UserNotFoundException("Failed to unfollow user with ID: " + unfollowId);
         }
+        return ResponseEntity.ok("Unfollowed user successfully.");
     }
+
     @GetMapping("/getFollowers")
     public ResponseEntity<Set<User>> getFollowers(){
         return followService.getfollowers();

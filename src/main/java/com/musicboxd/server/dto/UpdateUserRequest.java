@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class UpdateUserRequest {
     private String name;
-    private String username;
     private String profilePic;
     private String headerPic;
     private Address address;

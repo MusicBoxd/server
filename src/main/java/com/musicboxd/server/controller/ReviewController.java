@@ -22,6 +22,11 @@ public class ReviewController {
         return reviewService.addReview(reviewDTO);
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ReviewDTO>> getReviewsByUser(@PathVariable Long userId){
+        return reviewService.getReviewsByUser(userId);
+    }
+
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<?> deleteReview(@PathVariable Long userId){
         return reviewService.deleteReview(userId);

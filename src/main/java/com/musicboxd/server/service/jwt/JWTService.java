@@ -1,12 +1,18 @@
 package com.musicboxd.server.service.jwt;
 
 import com.musicboxd.server.model.User;
+import com.musicboxd.server.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -17,6 +23,8 @@ import java.util.function.Function;
 
 @Component
 public class JWTService {
+    @Autowired
+    UserRepository userRepo;
     private static final String SECRET = "413F4428472B4B6250655368566D5970337336763979244226452948404D6351";
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -66,6 +74,17 @@ public class JWTService {
     private boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
     }
+
+    public User retrieveLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated())
+            throw new BadCredentialsException("Bad Credentials login ");
+        String username = authentication.getName();
+        System.out.println("In Logged In User "+username);
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found "));
+    }
+
 
     public boolean isTokenExpiringSoon(String token) {
         Date expirationDate = extractClaim(token, Claims::getExpiration);

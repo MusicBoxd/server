@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ReviewDTO {
     private String uris;
-    private String reviewText;
     private String reviewTitle;
+    private String reviewText;
     private float rating;
 }

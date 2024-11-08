@@ -38,6 +38,22 @@ public class PlaylistServiceImp implements PlaylistService{
         return mapToDTO(savedPlaylist);
     }
 
+    @Override
+    public PlaylistDTO updatePlaylist(CreatePlaylistRequest createPlaylistRequest) {
+        User user = retrieveLoggedInUser();
+        Playlist playlist = playlistRepository.findById(createPlaylistRequest.getId())
+                .orElseThrow( () -> new BadCredentialsException("playlist not found"));
+        if(!playlist.getUser().equals(user)){
+            throw new BadCredentialsException("Unauthorized to update the playlist");
+        }
+        playlist.setName(createPlaylistRequest.getName());
+        playlist.setDescription(createPlaylistRequest.getDescription());
+        playlist.setPublicAccess(createPlaylistRequest.isPublicAccess());
+        playlist.setUris(createPlaylistRequest.getUris());
+        Playlist updatedPlaylist = playlistRepository.save(playlist);
+        return mapToDTO(updatedPlaylist);
+    }
+
     @Transactional
     @Override
     public PlaylistDTO addUriToPlaylist(Long playlistId, Set<String> uris) {

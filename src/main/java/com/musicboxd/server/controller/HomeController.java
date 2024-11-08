@@ -29,10 +29,7 @@ public class HomeController {
     public ResponseEntity<List<ReviewDTO>> getReviewsByUris(@PathVariable String uris){
         return reviewService.getReviewsByUris(uris);
     }
-    @GetMapping("review/user/{userId}")
-    public ResponseEntity<List<ReviewDTO>> getReviewsByUser(@PathVariable Long userId){
-        return reviewService.getReviewsByUser(userId);
-    }
+
     @GetMapping("like/album/{uris}")
     public ResponseEntity<List<Like>> getLikesByAlbum(@PathVariable String uris){
         return likeService.getLikesByAlbum(uris);
